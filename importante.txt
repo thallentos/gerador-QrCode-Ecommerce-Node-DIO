@@ -1,0 +1,4 @@
+faça o prebuild das bibliotecas:
+chalk: "npm i chalk"
+prompt: "npm i prompt"
+qrcode-terminal: "npm i qrcode-terminal"
