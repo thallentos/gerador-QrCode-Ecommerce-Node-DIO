@@ -1,34 +1,21 @@
-async function permittedCharacters() {
-  let permitted = [];
-
-  // esse "..." dentro do push serve para adicionar algo já existe, tipo um concat+
-  if (process.env.UPPERCASE_LETTERS === true)
-    permitted.push(..."ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-
-  if (process.env.LOWERCASE_LETTERS === true)
-    permitted.push(..."abcdefghijklmnopqrstuvwxyz");
-
-  if (process.env.NUMBERS === true) permitted.push(..."0123456789");
-
-  if (process.env.SPECIAL_CHARACTERS === true)
-    permitted.push(..."!@#$%^&*()-_");
-
-  return permitted;
-}
+import permittedCharacters from "./utils/permitted-characters.js";
 
 async function handle() {
-  let characters = [];
   let password = "";
 
-  const passwordLenght = process.env.PASSWORD_LENGTH;
+  const characters = await permittedCharacters();
+  const passwordLength = parseInt(process.env.PASSWORD_LENGTH);
 
-  characters = await permittedCharacters();
+  if (characters.length === 0) {
+    throw new Error("Nenhum tipo de caractere permitido foi selecionado no .env.");
+  }
 
-  for (let i = 0; i < passwordLenght; i++) {
+  for (let i = 0; i < passwordLength; i++) {
     const index = Math.floor(Math.random() * characters.length);
     password += characters[index];
   }
 
   return password;
 }
+
 export default handle;
